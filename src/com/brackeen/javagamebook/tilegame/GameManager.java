@@ -136,8 +136,10 @@ public class GameManager extends GameCore {
     	Player player2 = (Player)map.getPlayer();
         renderer.draw(g, map,
             screen.getWidth(), screen.getHeight());
+        g.setColor(Color.RED);
         g.drawString("Health: "+player2.getHealth(), 60, 70);
         g.drawString("Score:"+player2.getScore(), 600, 70);
+        g.setColor(Color.RED);
     }
 
 
@@ -323,15 +325,6 @@ public class GameManager extends GameCore {
         float dx = creature.getVelocityX();
         float oldX = creature.getX();
         float newX = oldX + dx * elapsedTime;
-        Creature player = (Creature)map.getPlayer();
-        
-        if (newX == oldX + 1){
-        int health = 0;
-        int score = 0;
-        health = ((Player) player).getHealth();
-    	health = ((Player) player).updateHealth(health, 1);
-    	((Player) player).setHealth(health);
-        }
         
         Point tile =
             getTileCollision(creature, newX, creature.getY());
@@ -350,6 +343,17 @@ public class GameManager extends GameCore {
                     TileMapRenderer.tilesToPixels(tile.x + 1));
             }
             creature.collideHorizontal();
+        }
+        if (creature instanceof Player) {
+        	Creature player = (Creature)map.getPlayer();
+        	int health;
+        	if(((Player) player).getLastUpdatedPosition() + 64 < player.getX() || ((Player) player).getLastUpdatedPosition() - 64 > player.getX()) {
+        		health = ((Player) player).getHealth();
+            	health = ((Player) player).updateHealth(health, 1);
+            	((Player) player).setHealth(health);
+            	((Player) player).setLastUpdatedPosition(player.getX());
+        	}
+        	
         }
         if (creature instanceof Player) {
             checkPlayerCollision((Player)creature, false);
