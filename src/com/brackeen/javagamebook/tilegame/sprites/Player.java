@@ -12,9 +12,18 @@ public class Player extends Creature {
     private boolean onGround;
  
     
-    private int health = 20;
+    private int health = 19;
     private int maxHealth = 40;
     private int score = 0;
+    private float lastUpdatedPosition;
+    
+    public float getLastUpdatedPosition( ){
+    	return lastUpdatedPosition;
+    }
+    
+    public void setLastUpdatedPosition( float pos ){
+    	lastUpdatedPosition = pos;
+    }
     
   //Logic for health
     public void setHealth(int health) {
@@ -50,7 +59,8 @@ public class Player extends Creature {
     public Player(Animation left, Animation right,
         Animation deadLeft, Animation deadRight)
     {
-        super(left, right, deadLeft, deadRight);
+    	super(left, right, deadLeft, deadRight);
+    	lastUpdatedPosition = this.getX();       
     }
 
 
