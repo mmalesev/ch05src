@@ -27,37 +27,6 @@ public abstract class Creature extends Sprite {
     private long stateTime;
     
     private int current_direction = 1; //1 for right, -1 for left
-    
-    private int health = 20;
-    private int maxHealth = 40;
-    private int score = 0;
-    
-  //Logic for health
-    public void setHealth(int health) {
-    	this.health = health;
-    }
-    
-    public int getHealth() {
-    	return this.health;
-    }
-    
-    public int updateHealth(int health, int incr) {
-    	return health + incr;
-    }
-    
-    //Logic for score
-    public void setScore(int score) {
-    	this.score = score;
-    }
-    
-    public int getScore() {
-    	return this.score;
-    }
-    
-    public int updateScore(int score) {
-    	return score += 1;
-    }
-    
 
     /**
         Creates a new Creature with the specified Animations.

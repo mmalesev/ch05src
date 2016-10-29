@@ -11,6 +11,42 @@ public class Player extends Creature {
 
     private boolean onGround;
  
+    
+    private int health = 20;
+    private int maxHealth = 40;
+    private int score = 0;
+    
+  //Logic for health
+    public void setHealth(int health) {
+    	this.health = health;
+    }
+    
+    public int getHealth() {
+    	return this.health;
+    }
+    
+    public int updateHealth(int health, int incr) {
+    	if ((health + incr) > 40) {
+    		health = 40;
+    	} else health = health+incr;
+    	return health;
+    }
+    
+    //Logic for score
+    public void setScore(int score) {
+    	this.score = score;
+    }
+    
+    public int getScore() {
+    	return this.score;
+    }
+    
+    public int updateScore(int score) {
+    	return score += 1;
+    }
+    
+    
+    
     public Player(Animation left, Animation right,
         Animation deadLeft, Animation deadRight)
     {
