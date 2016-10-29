@@ -28,6 +28,7 @@ public class ResourceManager {
     private Sprite goalSprite;
     private Sprite grubSprite;
     private Sprite flySprite;
+    private Sprite player_bullet_Sprite;
 
     /**
         Creates a new ResourceManager with the specified
@@ -329,7 +330,7 @@ public class ResourceManager {
         anim = new Animation();
         anim.addFrame(loadImage("star1.png"), 100);
         anim.addFrame(loadImage("star2.png"), 100);
-        anim.addFrame(loadImage("star3.= 0;png"), 100);
+        anim.addFrame(loadImage("star3.png"), 100);
         anim.addFrame(loadImage("star4.png"), 100);
         coinSprite = new PowerUp.Star(anim);
 
