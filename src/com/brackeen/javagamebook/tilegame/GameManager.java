@@ -48,7 +48,7 @@ public class GameManager extends GameCore {
     private GameAction exit;
     private GameAction player_shoot;
 
-
+    
     public void init() {
         super.init();
 
@@ -82,7 +82,7 @@ public class GameManager extends GameCore {
 
 
     /**
-        Closes any resurces used by the GameManager.
+        Closes any resources used by the GameManager.
     */
     public void stop() {
         super.stop();
@@ -140,10 +140,13 @@ public class GameManager extends GameCore {
 
     }
 
-
+//Drawing stuff to the screen
     public void draw(Graphics2D g) {
+    	Player player2 = (Player)map.getPlayer();
         renderer.draw(g, map,
             screen.getWidth(), screen.getHeight());
+        g.drawString("Health: "+player2.getHealth(), 60, 70);
+        g.drawString("Score:"+player2.getScore(), 600, 70);
     }
 
 
@@ -266,7 +269,8 @@ public class GameManager extends GameCore {
     */
     public void update(long elapsedTime) {
         Creature player = (Creature)map.getPlayer();
-
+        int health = 0;
+        int score  = 0;
 
         // player is dead! start map over
         if (player.getState() == Creature.STATE_DEAD) {
@@ -288,6 +292,15 @@ public class GameManager extends GameCore {
             if (sprite instanceof Creature) {
                 Creature creature = (Creature)sprite;
                 if (creature.getState() == Creature.STATE_DEAD) {
+                	//If the grub dies
+                	if (sprite instanceof Grub) {
+                	health = player.getHealth();
+                	health = player.updateHealth(health, 10);
+                	player.setHealth(health);
+                	score = player.getScore();
+                	score = player.updateScore(score);
+                	player.setScore(score);
+                	}
                     i.remove();
                 }
                 else {

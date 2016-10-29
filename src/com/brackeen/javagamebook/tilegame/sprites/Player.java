@@ -10,7 +10,7 @@ public class Player extends Creature {
     private static final float JUMP_SPEED = -.95f;
 
     private boolean onGround;
-
+ 
     public Player(Animation left, Animation right,
         Animation deadLeft, Animation deadRight)
     {
@@ -22,7 +22,8 @@ public class Player extends Creature {
         setVelocityX(0);
     }
 
-
+    
+    
     public void collideVertical() {
         // check if collided with ground
         if (getVelocityY() > 0) {

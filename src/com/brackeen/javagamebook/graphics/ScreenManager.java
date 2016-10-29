@@ -1,5 +1,4 @@
 package com.brackeen.javagamebook.graphics;
-
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -117,7 +116,6 @@ public class ScreenManager {
         frame.setResizable(false);
 
         device.setFullScreenWindow(frame);
-
         if (displayMode != null &&
             device.isDisplayChangeSupported())
         {
@@ -157,6 +155,7 @@ public class ScreenManager {
     */
     public Graphics2D getGraphics() {
         Window window = device.getFullScreenWindow();
+        
         if (window != null) {
             BufferStrategy strategy = window.getBufferStrategy();
             return (Graphics2D)strategy.getDrawGraphics();
@@ -224,7 +223,7 @@ public class ScreenManager {
         }
     }
 
-
+    
     /**
         Restores the screen's display mode.
     */
