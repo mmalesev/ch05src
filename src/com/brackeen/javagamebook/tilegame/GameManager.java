@@ -132,7 +132,8 @@ public class GameManager extends GameCore {
             }
             if(player_shoot.isPressed()){
             	Animation bullet_animation = new Animation();
-            	bullet_animation.addFrame(new ImageIcon("images/star1.png").getImage(), 100);
+            	Image bullet_icon = new ImageIcon("images/star1.png").getImage();
+            	bullet_animation.addFrame(bullet_icon, 100);
             	map.addSprite(new Player_bullet(bullet_animation, player));
             }
             player.setVelocityX(velocityX);
@@ -308,6 +309,10 @@ public class GameManager extends GameCore {
                     updateCreature(creature, elapsedTime);
                 }
             }
+            if(sprite instanceof Player_bullet && ((Player_bullet)sprite).isDead()){
+            	i.remove();
+            }
+           
             // normal update
             sprite.update(elapsedTime);
         }
@@ -362,6 +367,9 @@ public class GameManager extends GameCore {
         }
         if (creature instanceof Player) {
             checkPlayerCollision((Player)creature, false);
+        }
+        if (!(creature instanceof Player)){
+        	checkBulletCollision(creature);
         }
 
         // change y
@@ -426,6 +434,18 @@ public class GameManager extends GameCore {
         }
     }
 
+    public void checkBulletCollision(Creature creature){
+    	if (!creature.isAlive()) {
+            return;
+        }
+    	
+    	 Sprite collisionSprite = getSpriteCollision(creature);
+    	 
+    	 if (collisionSprite instanceof Player_bullet) {
+    		 creature.setState(Creature.STATE_DYING);
+    		 ((Player_bullet)collisionSprite).setDead(true);
+    	 }
+    }
 
     /**
         Gives the player the speicifed power up and removes it

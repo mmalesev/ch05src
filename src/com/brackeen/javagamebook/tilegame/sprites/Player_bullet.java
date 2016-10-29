@@ -12,8 +12,7 @@ public class Player_bullet extends Sprite {
 	/**
         Amount of time to go from STATE_DYING to STATE_DEAD.
     */
-	
-	//private int direction = 1; //1 - right, 1 - left
+	private boolean dead = false;
 	
 	public Player_bullet(Animation anim, Player p){
 		super(anim);
@@ -21,12 +20,20 @@ public class Player_bullet extends Sprite {
 		setX(p.getX());
 		setY(p.getY());
 	
-		setVelocityX(p.getDirection() * p.getMaxSpeed() * 5);
+		setVelocityX(p.getDirection() * p.getMaxSpeed() * 2);
 		setVelocityY(0);
 	}
 	
     public Object clone(Player p) {
         // use reflection to create the correct subclass
     	return new Player_bullet(this.getAnimation(), p);
+    }
+    
+    public boolean isDead(){
+    	return dead;
+    }
+    
+    public void setDead(boolean state){
+    	dead = state;
     }
 }
