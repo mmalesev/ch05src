@@ -141,6 +141,7 @@ public abstract class GameCore {
     /**
         Draws to the screen. Subclasses must override this
         method.
+     * @return 
     */
     public abstract void draw(Graphics2D g);
 }
