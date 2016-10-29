@@ -294,12 +294,13 @@ public class GameManager extends GameCore {
                 if (creature.getState() == Creature.STATE_DEAD) {
                 	//If the grub dies
                 	if (sprite instanceof Grub) {
-                	health = player.getHealth();
-                	health = player.updateHealth(health, 10);
-                	player.setHealth(health);
-                	score = player.getScore();
-                	score = player.updateScore(score);
-                	player.setScore(score);
+                	health = ((Player) player).getHealth();
+                	health = ((Player) player).updateHealth(health, 10);
+                	((Player) player).setHealth(health);
+                	score = ((Player) player).getScore();
+                	score = ((Player) player).updateScore(score);
+                	((Player) player).setScore(score);
+                	
                 	}
                     i.remove();
                 }
@@ -331,6 +332,16 @@ public class GameManager extends GameCore {
         float dx = creature.getVelocityX();
         float oldX = creature.getX();
         float newX = oldX + dx * elapsedTime;
+        Creature player = (Creature)map.getPlayer();
+        
+        if (newX == oldX + 1){
+        int health = 0;
+        int score = 0;
+        health = ((Player) player).getHealth();
+    	health = ((Player) player).updateHealth(health, 1);
+    	((Player) player).setHealth(health);
+        }
+        
         Point tile =
             getTileCollision(creature, newX, creature.getY());
         if (tile == null) {
