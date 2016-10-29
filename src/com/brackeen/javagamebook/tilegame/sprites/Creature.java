@@ -26,6 +26,8 @@ public abstract class Creature extends Sprite {
     private int state;
     private long stateTime;
     
+    private int current_direction = 1; //1 for right, -1 for left
+    
     private int health = 20;
     private int maxHealth = 40;
     private int score = 0;
@@ -176,10 +178,12 @@ public abstract class Creature extends Sprite {
         // select the correct Animation
         Animation newAnim = anim;
         if (getVelocityX() < 0) {
+        	current_direction = -1;
             newAnim = left;
         }
         else if (getVelocityX() > 0) {
             newAnim = right;
+            current_direction = 1;
         }
         if (state == STATE_DYING && newAnim == left) {
             newAnim = deadLeft;
@@ -202,6 +206,10 @@ public abstract class Creature extends Sprite {
         if (state == STATE_DYING && stateTime >= DIE_TIME) {
             setState(STATE_DEAD);
         }
+    }
+    
+    public int getDirection(){
+    	return current_direction;
     }
 
 }
