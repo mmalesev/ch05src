@@ -45,7 +45,6 @@ public class GameManager extends GameCore {
     private GameAction moveRight;
     private GameAction jump;
     private GameAction exit;
-
     
     public void init() {
         super.init();
@@ -137,9 +136,9 @@ public class GameManager extends GameCore {
         renderer.draw(g, map,
             screen.getWidth(), screen.getHeight());
         g.setColor(Color.RED);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 24));
         g.drawString("Health: "+player2.getHealth(), 60, 70);
         g.drawString("Score:"+player2.getScore(), 600, 70);
-        g.setColor(Color.RED);
     }
 
 
@@ -315,6 +314,33 @@ public class GameManager extends GameCore {
         long elapsedTime)
     {
 
+    	long time;
+    	if (creature instanceof Player) {
+        	Creature player = (Creature)map.getPlayer();
+        	int health;
+        	System.out.println("Time and health");
+        	System.out.println(elapsedTime);
+        	System.out.println(((Player) player).getHealth());
+        	if (((Player)player).getVelocityX() == 0) {
+        		
+        		time = ((Player) player).updateStationaryTime(elapsedTime);
+
+        		if (time > 1000) {
+        			
+        			health = ((Player) player).getHealth();
+                	health = ((Player) player).updateHealth(health, 5);
+                	((Player) player).setHealth(health);
+                	((Player) player).setStationaryTime(0);
+                	
+        		}
+        	} else
+        	{
+        		((Player) player).setStationaryTime(0);
+        	}
+        	
+        }
+    	
+    	
         // apply gravity
         if (!creature.isFlying()) {
             creature.setVelocityY(creature.getVelocityY() +
@@ -346,8 +372,8 @@ public class GameManager extends GameCore {
         }
         if (creature instanceof Player) {
         	Creature player = (Creature)map.getPlayer();
-        	int health;
-        	if(((Player) player).getLastUpdatedPosition() + 64 < player.getX() || ((Player) player).getLastUpdatedPosition() - 64 > player.getX()) {
+        	if((((Player) player).getLastUpdatedPosition() + 64 < player.getX() || ((Player) player).getLastUpdatedPosition() - 64 > player.getX())) {
+        		int health;
         		health = ((Player) player).getHealth();
             	health = ((Player) player).updateHealth(health, 1);
             	((Player) player).setHealth(health);
@@ -384,6 +410,7 @@ public class GameManager extends GameCore {
             boolean canKill = (oldY < creature.getY());
             checkPlayerCollision((Player)creature, canKill);
         }
+        
 
     }
 

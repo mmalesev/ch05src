@@ -10,12 +10,14 @@ public class Player extends Creature {
     private static final float JUMP_SPEED = -.95f;
 
     private boolean onGround;
- 
     
-    private int health = 19;
-    private int maxHealth = 40;
+    private int motionlessHealth = 5;
+    private int motionHealth = 1;
+    private int health = 20 - (motionlessHealth + motionHealth);
+    private int maxHealth = 4000;
     private int score = 0;
     private float lastUpdatedPosition;
+    private long stationaryTime = 0;
     
     public float getLastUpdatedPosition( ){
     	return lastUpdatedPosition;
@@ -23,6 +25,19 @@ public class Player extends Creature {
     
     public void setLastUpdatedPosition( float pos ){
     	lastUpdatedPosition = pos;
+    }
+    
+    public long getStationaryTime( ){
+    	return stationaryTime;
+    }
+    
+    public void setStationaryTime(long time ){
+    	stationaryTime = time;
+    }
+    
+    public long updateStationaryTime(long elapsedTime) {
+    	stationaryTime += elapsedTime;
+    	return stationaryTime;
     }
     
   //Logic for health
@@ -35,8 +50,8 @@ public class Player extends Creature {
     }
     
     public int updateHealth(int health, int incr) {
-    	if ((health + incr) > 40) {
-    		health = 40;
+    	if ((health + incr) > maxHealth) {
+    		health = maxHealth;
     	} else health = health+incr;
     	return health;
     }
