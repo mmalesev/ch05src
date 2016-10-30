@@ -119,4 +119,8 @@ public class Sprite {
     public Object clone() {
         return new Sprite(anim);
     }
+    
+    public Animation getAnimation(){
+    	return this.anim;
+    }
 }

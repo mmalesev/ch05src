@@ -7,6 +7,7 @@ import java.util.Iterator;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.sampled.AudioFormat;
+import javax.swing.ImageIcon;
 
 import com.brackeen.javagamebook.graphics.*;
 import com.brackeen.javagamebook.sound.*;
@@ -45,6 +46,11 @@ public class GameManager extends GameCore {
     private GameAction moveRight;
     private GameAction jump;
     private GameAction exit;
+<<<<<<< HEAD
+=======
+    private GameAction player_shoot;
+
+>>>>>>> df596063f781701f199af9938f3c01970f1d74ca
     
     public void init() {
         super.init();
@@ -95,6 +101,7 @@ public class GameManager extends GameCore {
             GameAction.DETECT_INITAL_PRESS_ONLY);
         exit = new GameAction("exit",
             GameAction.DETECT_INITAL_PRESS_ONLY);
+        player_shoot = new GameAction("player_action", GameAction.NORMAL);
 
         inputManager = new InputManager(
             screen.getFullScreenWindow());
@@ -104,6 +111,7 @@ public class GameManager extends GameCore {
         inputManager.mapToKey(moveRight, KeyEvent.VK_RIGHT);
         inputManager.mapToKey(jump, KeyEvent.VK_UP); //disabled jumping
         inputManager.mapToKey(exit, KeyEvent.VK_ESCAPE);
+        inputManager.mapToKey(player_shoot, KeyEvent.VK_S);
     }
 
 
@@ -124,6 +132,12 @@ public class GameManager extends GameCore {
             }
             if (jump.isPressed()) {
                 player.jump(false);
+            }
+            if(player_shoot.isPressed()){
+            	Animation bullet_animation = new Animation();
+            	Image bullet_icon = new ImageIcon("images/star1.png").getImage();
+            	bullet_animation.addFrame(bullet_icon, 100);
+            	map.addSprite(new Player_bullet(bullet_animation, player));
             }
             player.setVelocityX(velocityX);
         }
@@ -300,6 +314,10 @@ public class GameManager extends GameCore {
                     updateCreature(creature, elapsedTime);
                 }
             }
+            if(sprite instanceof Player_bullet && ((Player_bullet)sprite).isDead()){
+            	i.remove();
+            }
+           
             // normal update
             sprite.update(elapsedTime);
         }
@@ -384,6 +402,9 @@ public class GameManager extends GameCore {
         if (creature instanceof Player) {
             checkPlayerCollision((Player)creature, false);
         }
+        if (!(creature instanceof Player)){
+        	checkBulletCollision(creature);
+        }
 
         // change y
         float dy = creature.getVelocityY();
@@ -448,6 +469,18 @@ public class GameManager extends GameCore {
         }
     }
 
+    public void checkBulletCollision(Creature creature){
+    	if (!creature.isAlive()) {
+            return;
+        }
+    	
+    	 Sprite collisionSprite = getSpriteCollision(creature);
+    	 
+    	 if (collisionSprite instanceof Player_bullet) {
+    		 creature.setState(Creature.STATE_DYING);
+    		 ((Player_bullet)collisionSprite).setDead(true);
+    	 }
+    }
 
     /**
         Gives the player the speicifed power up and removes it
