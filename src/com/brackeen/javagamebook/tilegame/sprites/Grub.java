@@ -18,7 +18,7 @@ public class Grub extends Creature {
 	
 	private int current_direction = -1;
 	
-	private ArrayList<GrubBullet> newGrubBullets= new ArrayList<>();
+	private ArrayList<GrubBullet> newGrubBullets= new ArrayList<GrubBullet>();
 
 	public void updateLastGrubBullet(int update){
 		last_grub_bullet += update;
