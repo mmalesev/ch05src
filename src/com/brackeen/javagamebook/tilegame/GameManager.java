@@ -40,6 +40,8 @@ public class GameManager extends GameCore {
     private ResourceManager resourceManager;
     private Sound prizeSound;
     private Sound boopSound;
+    private Sound cartoon1Sound;
+    private Sound cartoon2Sound;
     private InputManager inputManager;
     private TileMapRenderer renderer;
 
@@ -49,7 +51,7 @@ public class GameManager extends GameCore {
     private GameAction exit;
     private GameAction player_shoot;
         
-    private int last_bullet = 100; //the time in ms since the last player bullet has been fired
+    private int last_bullet = 250; //the time in ms since the last player bullet has been fired
     private int consecutive_bullets = 0;
     
     
@@ -80,6 +82,8 @@ public class GameManager extends GameCore {
         soundManager = new SoundManager(PLAYBACK_FORMAT);
         prizeSound = soundManager.getSound("sounds/prize.wav");
         boopSound = soundManager.getSound("sounds/boop2.wav");
+        cartoon1Sound = soundManager.getSound("sounds/cartoon004.wav");
+        cartoon2Sound = soundManager.getSound("sounds/cartoon015.wav");
 
         // start music
         midiPlayer = new MidiPlayer();
@@ -114,7 +118,7 @@ public class GameManager extends GameCore {
 
         inputManager.mapToKey(moveLeft, KeyEvent.VK_LEFT);
         inputManager.mapToKey(moveRight, KeyEvent.VK_RIGHT);
-        inputManager.mapToKey(jump, KeyEvent.VK_UP); //disabled jumping
+        //inputManager.mapToKey(jump, KeyEvent.VK_UP); //disabled jumping
         inputManager.mapToKey(exit, KeyEvent.VK_ESCAPE);
         inputManager.mapToKey(player_shoot, KeyEvent.VK_S);
     }
@@ -141,7 +145,7 @@ public class GameManager extends GameCore {
             
             //Player shooting
             if(player_shoot.isPressed()){
-            	if(last_bullet >= 100){
+            	if(last_bullet >= 250){
             		//creating the animation for a new bullet
             		Animation bullet_animation = new Animation();
         	    	Image bullet_icon = new ImageIcon("images/star1.png").getImage();
@@ -161,13 +165,13 @@ public class GameManager extends GameCore {
             	}
             	
             	if(consecutive_bullets == 10){
-            		last_bullet = -500;
+            		last_bullet = -750;
             		consecutive_bullets = 0;
             	}
             }
             else{
             	consecutive_bullets = 0;
-            	last_bullet = 100;
+            	last_bullet = 250;
             }
             
             player.setVelocityX(velocityX);
@@ -575,6 +579,7 @@ public class GameManager extends GameCore {
         	int health = player.getHealth();
         	health = player.updateHealth(health, -5);
         	player.setHealth(health);
+        	soundManager.play(cartoon1Sound);
         }
     }
 
@@ -588,6 +593,7 @@ public class GameManager extends GameCore {
     	 if (collisionSprite instanceof Player_bullet) {
     		 creature.setState(Creature.STATE_DYING);
     		 ((Player_bullet)collisionSprite).setDead(true);
+    		 soundManager.play(cartoon2Sound);
     	 }
     }
 

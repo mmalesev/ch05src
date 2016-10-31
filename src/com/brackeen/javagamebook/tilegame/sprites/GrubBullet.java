@@ -22,7 +22,7 @@ public class GrubBullet extends Sprite {
 		setX(g.getX());
 		setY(g.getY());
 	
-		setVelocityX(g.getDirection() * g.getMaxSpeed() * 5);
+		setVelocityX(g.getDirection() * g.getMaxSpeed() * 10);
 		setVelocityY(0);
 		
 		startingPosition = g.getX();
