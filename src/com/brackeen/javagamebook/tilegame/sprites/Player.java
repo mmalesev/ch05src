@@ -14,7 +14,7 @@ public class Player extends Creature {
     private int motionlessHealth = 5;
     private int motionHealth = 1;
     private int health = 20 - (motionlessHealth + motionHealth);
-    private int maxHealth = 4000;
+    private int maxHealth = 40;
     private int score = 0;
     private float lastUpdatedPosition;
     private long stationaryTime = 0;
@@ -75,6 +75,7 @@ public class Player extends Creature {
         Animation deadLeft, Animation deadRight)
     {
     	super(left, right, deadLeft, deadRight);
+    	this.setDirection(1);
     	lastUpdatedPosition = this.getX();       
     }
 

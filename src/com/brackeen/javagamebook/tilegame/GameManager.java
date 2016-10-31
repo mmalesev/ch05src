@@ -52,9 +52,11 @@ public class GameManager extends GameCore {
     private int last_bullet = 100; //the time in ms since the last player bullet has been fired
     private int consecutive_bullets = 0;
     
-    private int last_grub_bullet = 200;
     
-    private ArrayList<GrubBullet> newGrubBullets= new ArrayList<>();
+    
+    private ArrayList<Grub> grubsShooting = new ArrayList<Grub>();
+    
+    
     
     public void init() {
         super.init();
@@ -320,11 +322,16 @@ public class GameManager extends GameCore {
         updateCreature(player, elapsedTime);
         player.update(elapsedTime);
         
-        //add all new grub bullets
-        while(!newGrubBullets.isEmpty()){
-        	map.addSprite(newGrubBullets.get(0));
-        	newGrubBullets.remove(0);
+        while(!grubsShooting.isEmpty()){
+        	Grub grub = grubsShooting.get(0);
+        	ArrayList<GrubBullet> newGrubBullets = grub.getGrubBullets();
+			while(!newGrubBullets.isEmpty()){
+	        	map.addSprite(newGrubBullets.get(0));
+	        	newGrubBullets.remove(0);
+	        }
+        	grubsShooting.remove(0);
         }
+        
     
         // update other sprites
         Iterator i = map.getSprites();
@@ -357,6 +364,14 @@ public class GameManager extends GameCore {
             		((Player_bullet)sprite).setDead(true);
             	}
             }
+            if(sprite instanceof GrubBullet){
+            	if(((GrubBullet)sprite).isDead()){
+            		i.remove();
+            	}
+            	if(((GrubBullet)sprite).expired()){
+            		((GrubBullet)sprite).setDead(true);
+            	}
+            }
            
             // normal update
             sprite.update(elapsedTime);
@@ -377,9 +392,6 @@ public class GameManager extends GameCore {
     	if (creature instanceof Player) {
         	Creature player = (Creature)map.getPlayer();
         	int health;
-        	System.out.println("Time and health");
-        	System.out.println(elapsedTime);
-        	System.out.println(((Player) player).getHealth());
         	if (((Player)player).getVelocityX() == 0) {
         		
         		time = ((Player) player).updateStationaryTime(elapsedTime);
@@ -438,6 +450,9 @@ public class GameManager extends GameCore {
             	((Player) player).setHealth(health);
             	((Player) player).setLastUpdatedPosition(player.getX());
         	}
+        	if(((Player)player).getHealth() <= 0){
+        		player.setState(Creature.STATE_DYING);
+        	}
         	
         }
         if (creature instanceof Player) {
@@ -472,11 +487,17 @@ public class GameManager extends GameCore {
             boolean canKill = (oldY < creature.getY());
             checkPlayerCollision((Player)creature, canKill);
         }
-        
+        Creature player = (Creature)map.getPlayer();
         if (creature instanceof Grub){
+        	
         	if(((Grub)creature).isOnScreen()){
+        		
         		((Grub) creature).updateTimeOnScreen((int)elapsedTime);
-        		if(((Grub) creature).getTimeOnScreen() > 500){
+        		if(((Grub) creature).getTimeOnScreen() >= 500){
+        			((Grub) creature).setShoot(true);
+        			
+        		}
+        		else if(Math.abs(((Player)player).getX() - ((Grub)creature).getPlayerInitialPosition()) > 64){
         			((Grub) creature).setShoot(true);
         		}
         	}
@@ -484,24 +505,29 @@ public class GameManager extends GameCore {
         		((Grub)creature).setShoot(false);
         	}
         	
+        	
+        	
         	if(((Grub)creature).getShoot()){
-        		
-            	if(last_grub_bullet >= 500){
+        		grubsShooting.add((Grub)creature);
+            	if(((Grub)creature).getLastGrubBullet() >= 500){
             		//creating the animation for a new bullet
             		Animation bullet_animation = new Animation();
         	    	Image bullet_icon = new ImageIcon("images/heart1.png").getImage();
         	    	bullet_animation.addFrame(bullet_icon, 100);
         	    	bullet_icon = new ImageIcon("images/heart2.png").getImage();
         	    	bullet_animation.addFrame(bullet_icon, 100);
-        	    	bullet_icon = new ImageIcon("images/heart3.png").getImage();
-        	    	bullet_animation.addFrame(bullet_icon, 100);
+        	    	//bullet_icon = new ImageIcon("images/heart3.png").getImage();
+        	    	//bullet_animation.addFrame(bullet_icon, 100);
         	    	
+        	    	ArrayList<GrubBullet> newGrubBullets = ((Grub)creature).getGrubBullets();
         	    	newGrubBullets.add(new GrubBullet(bullet_animation, (Grub)creature));
+        	    	((Grub)creature).setGrubBullets(newGrubBullets);
         	    	//soundManager.play(prizeSound);
-        	    	last_grub_bullet = 0;
+        	    	((Grub)creature).setLastGrubBullet(0);
             	}
             	else{
-            		last_grub_bullet += elapsedTime;
+            		((Grub)creature).updateLastGrubBullet((int)elapsedTime);
+            		
             	}
         	}
         }
@@ -542,6 +568,13 @@ public class GameManager extends GameCore {
                 // player dies!
                 player.setState(Creature.STATE_DYING);
             }
+            
+        }
+        if(collisionSprite instanceof GrubBullet && !((GrubBullet)collisionSprite).isDead()){
+        	((GrubBullet)collisionSprite).setDead(true);
+        	int health = player.getHealth();
+        	health = player.updateHealth(health, -5);
+        	player.setHealth(health);
         }
     }
 

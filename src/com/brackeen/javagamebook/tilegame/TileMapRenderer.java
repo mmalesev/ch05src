@@ -146,7 +146,11 @@ public class TileMapRenderer {
             {
                 ((Creature)sprite).wakeUp();
                 if(sprite instanceof Grub){
+                	if(!((Grub)sprite).isOnScreen()){
+                		((Grub)sprite).setPlayerInitialPosition(player.getX());
+                	}
                 	((Grub)sprite).onScreen(true);
+                	
                 }
             }
             
