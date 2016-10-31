@@ -396,7 +396,7 @@ public class GameManager extends GameCore {
     	if (creature instanceof Player) {
         	Creature player = (Creature)map.getPlayer();
         	int health;
-        	if (((Player)player).getVelocityX() == 0) {
+        	if (((Player)player).getVelocityX() == 0 && ((Player)player).getVelocityY() < 0.1) {
         		
         		time = ((Player) player).updateStationaryTime(elapsedTime);
 

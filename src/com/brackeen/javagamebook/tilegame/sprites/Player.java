@@ -13,7 +13,7 @@ public class Player extends Creature {
     
     private int motionlessHealth = 5;
     private int motionHealth = 1;
-    private int health = 20 - (motionlessHealth + motionHealth);
+    private int health = 20 - motionHealth;//(motionlessHealth + motionHealth);
     private int maxHealth = 40;
     private int score = 0;
     private float lastUpdatedPosition;
