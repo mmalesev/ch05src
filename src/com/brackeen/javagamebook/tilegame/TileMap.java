@@ -17,7 +17,7 @@ public class TileMap {
     private Image[][] tiles;
     private LinkedList sprites;
     private Sprite player;
-
+ 
     /**
         Creates a new TileMap with the specified width and
         height (in number of tiles) of the map.
@@ -28,6 +28,7 @@ public class TileMap {
     }
 
 
+    
     /**
         Gets the width of this TileMap (number of tiles across).
     */

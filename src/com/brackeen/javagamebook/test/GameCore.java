@@ -11,7 +11,7 @@ import com.brackeen.javagamebook.graphics.ScreenManager;
 */
 public abstract class GameCore {
 
-    protected static final int FONT_SIZE = 24;
+    protected static final int FONT_SIZE = 64;
 
     private static final DisplayMode POSSIBLE_MODES[] = {
         new DisplayMode(800, 600, 16, 0),
