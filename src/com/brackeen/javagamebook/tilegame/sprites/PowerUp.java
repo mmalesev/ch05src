@@ -38,6 +38,27 @@ public abstract class PowerUp extends Sprite {
     }
 
 
+    //NEW
+    /**
+    An Exploding PowerUp. Gives the player points.
+   */
+    public static class Exploding extends PowerUp {
+    	public Exploding(Animation anim) {
+    		super(anim);
+    	}
+    }
+    
+    /**
+    An Gas PowerUp. Gives the player points.
+   */
+    public static class Gas extends PowerUp {
+    	public Gas(Animation anim) {
+    		super(anim);
+    	}
+    }
+
+    
+    
     /**
         A Music PowerUp. Changes the game music.
     */

@@ -25,6 +25,8 @@ public class ResourceManager {
     private Sprite playerSprite;
     private Sprite musicSprite;
     private Sprite coinSprite;
+    private Sprite explodingSprite; //NEW
+    private Sprite gasSprite; //NEW
     private Sprite goalSprite;
     private Sprite grubSprite;
     private Sprite flySprite;
@@ -157,6 +159,15 @@ public class ResourceManager {
                     newMap.setTile(x, y, (Image)tiles.get(tile));
                 }
 
+                //Check for exploding block
+                else if (ch == '3') {
+                	addSprite(newMap, explodingSprite, x, y);
+                }
+                
+                else if (ch == '4') {
+                	addSprite(newMap, gasSprite, x, y);
+                }
+                
                 // check if the char represents a sprite
                 else if (ch == 'o') {
                     addSprite(newMap, coinSprite, x, y);
@@ -326,6 +337,19 @@ public class ResourceManager {
         anim.addFrame(loadImage("heart2.png"), 150);
         goalSprite = new PowerUp.Goal(anim);
 
+        //NEW
+        // create "exploding" sprite
+        anim = new Animation();
+        anim.addFrame(loadImage("tile_I.png"), 100); //Change to a new one
+        explodingSprite = new PowerUp.Exploding(anim);
+     
+        
+        // create "gas" sprite
+        anim = new Animation();
+        anim.addFrame(loadImage("tile_H.png"), 100); //Change to a new one
+        gasSprite = new PowerUp.Gas(anim);
+     
+        
         // create "star" sprite
         anim = new Animation();
         anim.addFrame(loadImage("star1.png"), 100);

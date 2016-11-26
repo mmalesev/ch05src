@@ -46,11 +46,9 @@ public class GameManager extends GameCore {
     private GameAction moveRight;
     private GameAction jump;
     private GameAction exit;
-<<<<<<< HEAD
-=======
+
     private GameAction player_shoot;
 
->>>>>>> df596063f781701f199af9938f3c01970f1d74ca
     
     public void init() {
         super.init();
@@ -336,9 +334,6 @@ public class GameManager extends GameCore {
     	if (creature instanceof Player) {
         	Creature player = (Creature)map.getPlayer();
         	int health;
-        	System.out.println("Time and health");
-        	System.out.println(elapsedTime);
-        	System.out.println(((Player) player).getHealth());
         	if (((Player)player).getVelocityX() == 0) {
         		
         		time = ((Player) player).updateStationaryTime(elapsedTime);
@@ -487,20 +482,42 @@ public class GameManager extends GameCore {
         from the map.
     */
     public void acquirePowerUp(PowerUp powerUp) {
-        // remove it from the map
-        map.removeSprite(powerUp);
-
+        
+        Creature player = (Creature)map.getPlayer();
+    	int health;
         if (powerUp instanceof PowerUp.Star) {
+        	// remove it from the map
+            map.removeSprite(powerUp);
             // do something here, like give the player points
             soundManager.play(prizeSound);
         }
+        else if (powerUp instanceof PowerUp.Exploding) {
+           //Health decreases by 10
+        	// remove it from the map
+            map.removeSprite(powerUp);
+
+           health = ((Player) player).getHealth();
+           health = ((Player) player).updateHealth(health, -10);
+           ((Player) player).setHealth(health);
+        }
+        else if (powerUp instanceof PowerUp.Gas) {
+            //Health decreases by 10
+        	//DO NOT REMOVE FROM THE MAP
+            health = ((Player) player).getHealth();
+            health = ((Player) player).updateHealth(health, -10);
+            ((Player) player).setHealth(health);
+         }
         else if (powerUp instanceof PowerUp.Music) {
             // change the music
+        	// remove it from the map
+            map.removeSprite(powerUp);
             soundManager.play(prizeSound);
             toggleDrumPlayback();
         }
         else if (powerUp instanceof PowerUp.Goal) {
             // advance to next map
+        	// remove it from the map
+            map.removeSprite(powerUp);
             soundManager.play(prizeSound,
                 new EchoFilter(2000, .7f), false);
             map = resourceManager.loadNextMap();
