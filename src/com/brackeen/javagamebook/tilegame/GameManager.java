@@ -53,7 +53,7 @@ public class GameManager extends GameCore {
         
     private int last_bullet = 250; //the time in ms since the last player bullet has been fired
     private int consecutive_bullets = 0;
-    
+    public boolean canShoot = true;
     
     
     private ArrayList<Grub> grubsShooting = new ArrayList<Grub>();
@@ -145,7 +145,7 @@ public class GameManager extends GameCore {
             
             //Player shooting
             if(player_shoot.isPressed()){
-            	if(last_bullet >= 250){
+            	if(last_bullet >= 250 && canShoot == true){
             		//creating the animation for a new bullet
             		Animation bullet_animation = new Animation();
         	    	Image bullet_icon = new ImageIcon("images/star1.png").getImage();
@@ -604,11 +604,23 @@ public class GameManager extends GameCore {
     public void acquirePowerUp(PowerUp powerUp) {
         // remove it from the map
         map.removeSprite(powerUp);
-
+	int count = 0;
+	Creature player = (Creature)map.getPlayer();
+	    
         if (powerUp instanceof PowerUp.Star) {
             // do something here, like give the player points
             soundManager.play(prizeSound);
         }
+	 else if (powerUp instanceof PowerUp.Gas) {
+            canShoot = false;
+	    if((((Player) player).getLastUpdatedPosition() + 64 < player.getX() || ((Player) player).getLastUpdatedPosition() - 64 > player.getX())) {
+        	count = count + 1;
+	    }   
+	    if (count > 10) {
+	    	canShoot = true;
+		count = 0;    
+	    }
+	 }
         else if (powerUp instanceof PowerUp.Music) {
             // change the music
             soundManager.play(prizeSound);
