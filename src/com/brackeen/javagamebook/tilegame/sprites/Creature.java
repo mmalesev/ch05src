@@ -26,7 +26,7 @@ public abstract class Creature extends Sprite {
     private int state;
     private long stateTime;
     
-    private int current_direction = 1; //1 for right, -1 for left
+    private int current_direction; //1 for right, -1 for left
 
     /**
         Creates a new Creature with the specified Animations.
@@ -179,6 +179,10 @@ public abstract class Creature extends Sprite {
     
     public int getDirection(){
     	return current_direction;
+    }
+    
+    public void setDirection(int direction){
+    	current_direction = direction;
     }
 
 }

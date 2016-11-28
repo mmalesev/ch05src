@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import com.brackeen.javagamebook.graphics.Sprite;
 import com.brackeen.javagamebook.tilegame.sprites.Creature;
-
+import com.brackeen.javagamebook.tilegame.sprites.Grub;
 /**
     The TileMapRenderer class draws a TileMap on the screen.
     It draws all tiles, sprites, and an optional background image
@@ -145,6 +145,18 @@ public class TileMapRenderer {
                 x >= 0 && x < screenWidth)
             {
                 ((Creature)sprite).wakeUp();
+                if(sprite instanceof Grub){
+                	if(!((Grub)sprite).isOnScreen()){
+                		((Grub)sprite).setPlayerInitialPosition(player.getX());
+                	}
+                	((Grub)sprite).onScreen(true);
+                	
+                }
+            }
+            
+            if (sprite instanceof Grub && !(x >= 0 && x < screenWidth)){
+            	((Grub)sprite).onScreen(false);
+            	((Grub)sprite).setTimeOnScreen(0);
             }
         }
     }

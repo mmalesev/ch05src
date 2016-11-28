@@ -7,25 +7,25 @@ import com.brackeen.javagamebook.graphics.*;
     die. It has four Animations: moving left, moving right,
     dying on the left, and dying on the right.
 */
-public class Player_bullet extends Sprite {
+public class GrubBullet extends Sprite {
 
 	/**
         Amount of time to go from STATE_DYING to STATE_DEAD.
     */
 	private boolean dead = false;
 	private float startingPosition;
-	private float stepSize = 1000;
+	private float stepSize = 500;
 	
-	public Player_bullet(Animation anim, Player p){
+	public GrubBullet(Animation anim, Grub g){
 		super(anim);
 		
-		setX(p.getX());
-		setY(p.getY());
+		setX(g.getX());
+		setY(g.getY());
 	
-		setVelocityX(p.getDirection() * p.getMaxSpeed() * 2);
+		setVelocityX(g.getDirection() * g.getMaxSpeed() * 10);
 		setVelocityY(0);
 		
-		startingPosition = p.getX();
+		startingPosition = g.getX();
 	}
 	
     public Object clone(Player p) {
