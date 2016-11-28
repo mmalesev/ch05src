@@ -84,13 +84,21 @@ public class ResourceManager {
     }
 
 
-    public TileMap loadNextMap() {
+    public TileMap loadNextMap(String[] inputArgs) {
         TileMap map = null;
+        String gameMap;
+        if(inputArgs.length == 0){
+        	gameMap = "maps/map0.txt";
+        }
+        else{
+        	gameMap = "maps/" + inputArgs[0];
+        }
+        
         while (map == null) {
             currentMap = 0;
             try {
                 map = loadMap(
-                    "maps/map" + currentMap + ".txt");
+                    gameMap);
             }
             catch (IOException ex) {
                 if (currentMap == 1) {

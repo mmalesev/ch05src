@@ -22,7 +22,9 @@ import com.brackeen.javagamebook.tilegame.sprites.*;
 public class GameManager extends GameCore {
 
     public static void main(String[] args) {
-        new GameManager().run();
+        GameManager game = new GameManager();
+        game.inputArgs = args;
+        game.run();
     }
 
     // uncompressed, 44100Hz, 16-bit, mono, signed, little-endian
@@ -54,7 +56,7 @@ public class GameManager extends GameCore {
     private int last_bullet = 250; //the time in ms since the last player bullet has been fired
     private int consecutive_bullets = 0;
     
-    
+    private String[] inputArgs;
     
     private ArrayList<Grub> grubsShooting = new ArrayList<Grub>();
     
@@ -76,7 +78,7 @@ public class GameManager extends GameCore {
             resourceManager.loadImage("background.png"));
 
         // load first map
-        map = resourceManager.loadNextMap();
+        map = resourceManager.loadNextMap(inputArgs);
 
         // load sounds
         soundManager = new SoundManager(PLAYBACK_FORMAT);
@@ -118,7 +120,7 @@ public class GameManager extends GameCore {
 
         inputManager.mapToKey(moveLeft, KeyEvent.VK_LEFT);
         inputManager.mapToKey(moveRight, KeyEvent.VK_RIGHT);
-        //inputManager.mapToKey(jump, KeyEvent.VK_UP); //disabled jumping
+        inputManager.mapToKey(jump, KeyEvent.VK_UP);
         inputManager.mapToKey(exit, KeyEvent.VK_ESCAPE);
         inputManager.mapToKey(player_shoot, KeyEvent.VK_S);
     }
@@ -618,7 +620,7 @@ public class GameManager extends GameCore {
             // advance to next map
             soundManager.play(prizeSound,
                 new EchoFilter(2000, .7f), false);
-            map = resourceManager.loadNextMap();
+            //map = resourceManager.loadNextMap();
         }
     }
 
