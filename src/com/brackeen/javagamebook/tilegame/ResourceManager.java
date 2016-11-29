@@ -340,13 +340,13 @@ public class ResourceManager {
         //NEW
         // create "exploding" sprite
         anim = new Animation();
-        anim.addFrame(loadImage("tile_I.png"), 100); //Change to a new one
+        anim.addFrame(loadImage("exploding.png"), 100);
         explodingSprite = new PowerUp.Exploding(anim);
      
         
         // create "gas" sprite
         anim = new Animation();
-        anim.addFrame(loadImage("tile_H.png"), 100); //Change to a new one
+        anim.addFrame(loadImage("gas.png"), 100); 
         gasSprite = new PowerUp.Gas(anim);
      
         

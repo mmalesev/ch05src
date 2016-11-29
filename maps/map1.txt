@@ -8,7 +8,8 @@
 #   *       Goal
 #   1       Bad Guy 1 (grub)
 #   2       Bad Guy 2 (fly)
-                                                                 
+#   3		Exploding Block (Red)
+#	4		Gas Block (Black)                                                                 
                                                            o     o
                                                      o      o    o
                        o o o        o o o       o     o      o 
