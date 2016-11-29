@@ -23,8 +23,8 @@ public abstract class Creature extends Sprite {
     private Animation right;
     private Animation deadLeft;
     private Animation deadRight;
-    private int state;
-    private long stateTime;
+    public int state;
+    public long stateTime;
     
     private int current_direction; //1 for right, -1 for left
 

@@ -415,6 +415,13 @@ public class GameManager extends GameCore {
         		((Player) player).setStationaryTime(0);
         	}
         	
+        	if(((Player)player).isInvincible()){
+        		((Player)player).updateInvincibleTime((int)elapsedTime);
+        		if(((Player)player).getInvincibleTime() >= 3000 || ((Player)player).getStepsSinceInvincible() >= 10){
+        			((Player)player).setInvincible(false);
+        		}
+        	}
+        	
         }
     	
     	
@@ -455,6 +462,9 @@ public class GameManager extends GameCore {
             	health = ((Player) player).updateHealth(health, 1);
             	((Player) player).setHealth(health);
             	((Player) player).setLastUpdatedPosition(player.getX());
+            	if(((Player)creature).isInvincible()){
+            		((Player)creature).updateStepsSinceInvincible(1);
+            	}
         	}
         	if(((Player)player).getHealth() <= 0){
         		player.setState(Creature.STATE_DYING);
@@ -578,10 +588,12 @@ public class GameManager extends GameCore {
         }
         if(collisionSprite instanceof GrubBullet && !((GrubBullet)collisionSprite).isDead()){
         	((GrubBullet)collisionSprite).setDead(true);
-        	int health = player.getHealth();
-        	health = player.updateHealth(health, -5);
-        	player.setHealth(health);
-        	soundManager.play(cartoon1Sound);
+        	if(!player.isInvincible()){
+	        	int health = player.getHealth();
+	        	health = player.updateHealth(health, -5);
+	        	player.setHealth(health);
+	        	soundManager.play(cartoon1Sound);
+        	}
         }
     }
 
@@ -606,15 +618,17 @@ public class GameManager extends GameCore {
     public void acquirePowerUp(PowerUp powerUp) {
         // remove it from the map
         map.removeSprite(powerUp);
+        Player player = (Player)map.getPlayer();
 
         if (powerUp instanceof PowerUp.Star) {
             // do something here, like give the player points
+        	player.setInvincible(true);
             soundManager.play(prizeSound);
         }
         else if (powerUp instanceof PowerUp.Music) {
             // change the music
+        	player.setHealth(player.updateHealth(player.getHealth(), 5));
             soundManager.play(prizeSound);
-            toggleDrumPlayback();
         }
         else if (powerUp instanceof PowerUp.Goal) {
             // advance to next map

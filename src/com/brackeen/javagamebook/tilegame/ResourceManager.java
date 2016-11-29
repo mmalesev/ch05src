@@ -29,6 +29,7 @@ public class ResourceManager {
     private Sprite grubSprite;
     private Sprite flySprite;
     private Sprite player_bullet_Sprite;
+    private String gameMap;
 
     /**
         Creates a new ResourceManager with the specified
@@ -86,7 +87,7 @@ public class ResourceManager {
 
     public TileMap loadNextMap(String[] inputArgs) {
         TileMap map = null;
-        String gameMap;
+        
         if(inputArgs.length == 0){
         	gameMap = "maps/map0.txt";
         }
@@ -117,7 +118,7 @@ public class ResourceManager {
     public TileMap reloadMap() {
         try {
             return loadMap(
-                "maps/map" + currentMap + ".txt");
+                gameMap);
         }
         catch (IOException ex) {
             ex.printStackTrace();

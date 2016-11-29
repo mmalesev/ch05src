@@ -18,6 +18,39 @@ public class Player extends Creature {
     private int score = 0;
     private float lastUpdatedPosition;
     private long stationaryTime = 0;
+    private boolean invincible = false;
+    private int invincibleTime = 0;
+    private int stepsSinceInvincible = 0;
+    
+    public int getStepsSinceInvincible(){
+    	return stepsSinceInvincible;
+    }
+    
+    public void updateStepsSinceInvincible(int update){
+    	stepsSinceInvincible+=update;
+    }
+    
+    public void setStepsSinceInvincible(int update){
+    	stepsSinceInvincible=update;
+    }
+    
+    public boolean isInvincible(){
+    	return invincible;
+    }
+    
+    public void setInvincible(boolean update){
+    	invincible = update;
+    	invincibleTime = 0;
+    	stepsSinceInvincible = 0;
+    }
+    
+    public int getInvincibleTime(){
+    	return invincibleTime;
+    }
+    
+    public void updateInvincibleTime(int update){
+    	invincibleTime += update;
+    }
     
     public float getLastUpdatedPosition( ){
     	return lastUpdatedPosition;
@@ -123,6 +156,20 @@ public class Player extends Creature {
 
     public float getMaxSpeed() {
         return 0.5f;
+    }
+    
+    public void setState(int state) {
+        if (this.state != state) {
+        	if(this.isInvincible()){
+        		state = STATE_NORMAL;
+        	}
+            this.state = state;
+            stateTime = 0;
+            if (state == STATE_DYING) {
+                setVelocityX(0);
+                setVelocityY(0);
+            }
+        }
     }
 
 }
