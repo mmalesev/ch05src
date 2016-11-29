@@ -18,6 +18,46 @@ public class Player extends Creature {
     private int score = 0;
     private float lastUpdatedPosition;
     private long stationaryTime = 0;
+    private long shootTime = 0;
+    private boolean canShoot = true;
+    private int shootCount = 0;
+    
+    
+    public int getShootCount( ){
+    	return shootCount;
+    }
+    
+    public void setShootCount(int count){
+    	shootCount = count;
+    }
+    
+    public int updateShootCount(int count) {
+    	shootCount += count;
+    	return shootCount;
+    }
+    
+    
+    
+    public long getShootTime( ){
+    	return shootTime;
+    }
+    
+    public void setShootTime(long time ){
+    	shootTime = time;
+    }
+    
+    public long updateShootTime(long elapsedTime) {
+    	shootTime += elapsedTime;
+    	return shootTime;
+    }
+    
+    public void setcanShoot (boolean can) {
+    	canShoot = can;
+    }
+    
+    public boolean getcanShoot () {
+    	return canShoot;
+    }
     
     public float getLastUpdatedPosition( ){
     	return lastUpdatedPosition;

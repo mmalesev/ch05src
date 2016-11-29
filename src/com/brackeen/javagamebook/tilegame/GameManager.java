@@ -143,8 +143,8 @@ public class GameManager extends GameCore {
             }
             
             //Player shooting
-            if(player_shoot.isPressed()){
-            	if(last_bullet >= 250){
+            if(player_shoot.isPressed() && ((Player) player).getcanShoot() == true){
+            	if(last_bullet >= 250 ){
             		//creating the animation for a new bullet
             		Animation bullet_animation = new Animation();
         	    	Image bullet_icon = new ImageIcon("images/star1.png").getImage();
@@ -325,6 +325,8 @@ public class GameManager extends GameCore {
         updateCreature(player, elapsedTime);
         player.update(elapsedTime);
         
+        
+        
         while(!grubsShooting.isEmpty()){
         	Grub grub = grubsShooting.get(0);
         	ArrayList<GrubBullet> newGrubBullets = grub.getGrubBullets();
@@ -392,21 +394,30 @@ public class GameManager extends GameCore {
     {
 
     	long time;
+    	long timeShoot;
+    	
     	if (creature instanceof Player) {
         	Creature player = (Creature)map.getPlayer();
         	int health;
-
+        	
+        	if (((Player)player).getcanShoot() == false) {
+        		timeShoot = ((Player) player).updateShootTime(elapsedTime);
+        		if (timeShoot > 3000) {
+        			((Player) player).setcanShoot(true);
+        			((Player) player).setShootTime(0);	
+        		}
+        		
+        	}
+        	
         	if (((Player)player).getVelocityX() == 0 && ((Player)player).getVelocityY() < 0.1) {
         		
         		time = ((Player) player).updateStationaryTime(elapsedTime);
 
         		if (time > 1000) {
-        			
         			health = ((Player) player).getHealth();
                 	health = ((Player) player).updateHealth(health, 5);
                 	((Player) player).setHealth(health);
-                	((Player) player).setStationaryTime(0);
-                	
+                	((Player) player).setStationaryTime(0); 	
         		}
         	} else
         	{
@@ -449,6 +460,14 @@ public class GameManager extends GameCore {
         	Creature player = (Creature)map.getPlayer();
         	if((((Player) player).getLastUpdatedPosition() + 64 < player.getX() || ((Player) player).getLastUpdatedPosition() - 64 > player.getX())) {
         		int health;
+        		if (((Player) player).getcanShoot() == false) {
+        			((Player) player).updateShootCount(1);
+        			if (((Player) player).getShootCount() > 10) {
+        				((Player) player).setcanShoot(true);
+        				((Player) player).setShootCount(0);
+        			}
+        		}
+        		
         		health = ((Player) player).getHealth();
             	health = ((Player) player).updateHealth(health, 1);
             	((Player) player).setHealth(health);
@@ -598,7 +617,7 @@ public class GameManager extends GameCore {
     }
 
     /**
-        Gives the player the speicifed power up and removes it
+        Gives the player the specified power up and removes it
         from the map.
     */
     public void acquirePowerUp(PowerUp powerUp) {
@@ -621,11 +640,8 @@ public class GameManager extends GameCore {
            ((Player) player).setHealth(health);
         }
         else if (powerUp instanceof PowerUp.Gas) {
-            //Health decreases by 10
-        	//DO NOT REMOVE FROM THE MAP
-            health = ((Player) player).getHealth();
-            health = ((Player) player).updateHealth(health, -10);
-            ((Player) player).setHealth(health);
+            //Do not remove from the map
+        	((Player) player).setcanShoot(false); //Player can not shoot
          }
         else if (powerUp instanceof PowerUp.Music) {
             // change the music
