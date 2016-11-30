@@ -34,7 +34,7 @@ public class GameManager extends GameCore {
 
     private static final int DRUM_TRACK = 1;
 
-    public static final float GRAVITY = 0.002f;
+    public static /*final*/ float GRAVITY = 0.002f;
 
     private Point pointCache = new Point();
     private TileMap map;
@@ -47,15 +47,17 @@ public class GameManager extends GameCore {
     private Sound cartoon2Sound;
     private InputManager inputManager;
     private TileMapRenderer renderer;
-    private Sound explosionSound;
     private Sound mushroomSound;
     
 
     private GameAction moveLeft;
     private GameAction moveRight;
     private GameAction jump;
+    private GameAction fall;
     private GameAction exit;
     private GameAction player_shoot;
+    
+    private boolean drawFlying = false;
         
     private int last_bullet = 250; //the time in ms since the last player bullet has been fired
     private int consecutive_bullets = 0;
@@ -116,6 +118,7 @@ public class GameManager extends GameCore {
         jump = new GameAction("jump",
             GameAction.DETECT_INITAL_PRESS_ONLY);
         exit = new GameAction("exit", GameAction.DETECT_INITAL_PRESS_ONLY);
+        fall = new GameAction("fall", GameAction.DETECT_INITAL_PRESS_ONLY);
         player_shoot = new GameAction("player_action", GameAction.NORMAL);
 
         inputManager = new InputManager(
@@ -125,6 +128,7 @@ public class GameManager extends GameCore {
         inputManager.mapToKey(moveLeft, KeyEvent.VK_LEFT);
         inputManager.mapToKey(moveRight, KeyEvent.VK_RIGHT);
         inputManager.mapToKey(jump, KeyEvent.VK_UP);
+        inputManager.mapToKey(fall, KeyEvent.VK_DOWN);
         inputManager.mapToKey(exit, KeyEvent.VK_ESCAPE);
         inputManager.mapToKey(player_shoot, KeyEvent.VK_S);
     }
@@ -147,6 +151,10 @@ public class GameManager extends GameCore {
             }
             if (jump.isPressed()) {
                 player.jump(false);
+            }
+            if (fall.isPressed()) {
+                player.gravity = !player.gravity;
+                drawFlying = !drawFlying;
             }
             
             //Player shooting
@@ -188,12 +196,19 @@ public class GameManager extends GameCore {
 //Drawing stuff to the screen
     public void draw(Graphics2D g) {
     	Player player2 = (Player)map.getPlayer();
+    	
         renderer.draw(g, map,
             screen.getWidth(), screen.getHeight());
         g.setColor(Color.RED);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 24));
         g.drawString("Health: "+player2.getHealth(), 60, 70);
         g.drawString("Score:"+player2.getScore(), 600, 70);
+        if(drawFlying){
+    		g.drawString("Flying enabled", 300, 70);
+    	}
+        else{
+        	g.drawString("Flying disabled", 300, 70);
+        }
     }
 
 
@@ -318,7 +333,16 @@ public class GameManager extends GameCore {
         Creature player = (Creature)map.getPlayer();
         int health = 0;
         int score  = 0;
-
+       
+        if(/*player.getX() > 200 && player.getX() < 1000 && */!((Player)player).gravity){
+        	if(player.getY() < 200){ player.setY(200); }
+        	drawFlying = true;
+        	GRAVITY = 0;
+        }
+        else{
+        	drawFlying = false;
+        	GRAVITY = 0.002f;
+        }
         // player is dead! start map over
         if (player.getState() == Creature.STATE_DEAD) {
             map = resourceManager.reloadMap();

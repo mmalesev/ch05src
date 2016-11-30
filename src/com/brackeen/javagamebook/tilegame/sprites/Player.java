@@ -21,6 +21,7 @@ public class Player extends Creature {
     private boolean invincible = false;
     private int invincibleTime = 0;
     private int stepsSinceInvincible = 0;
+    public boolean gravity = true;
     
     public int getStepsSinceInvincible(){
     	return stepsSinceInvincible;
