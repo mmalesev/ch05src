@@ -47,6 +47,9 @@ public class GameManager extends GameCore {
     private Sound cartoon2Sound;
     private InputManager inputManager;
     private TileMapRenderer renderer;
+    private Sound explosionSound;
+    private Sound mushroomSound;
+    
 
     private GameAction moveLeft;
     private GameAction moveRight;
@@ -85,6 +88,8 @@ public class GameManager extends GameCore {
         boopSound = soundManager.getSound("sounds/boop2.wav");
         cartoon1Sound = soundManager.getSound("sounds/cartoon004.wav");
         cartoon2Sound = soundManager.getSound("sounds/cartoon015.wav");
+        //explosionSound = soundManager.getSound("sounds/cartoon053.wav");
+        //mushroomSound = soundManager.getSound("sounds/cartoon180.wav");
 
         // start music
         midiPlayer = new MidiPlayer();
@@ -655,17 +660,33 @@ public class GameManager extends GameCore {
            health = ((Player) player).getHealth();
            health = ((Player) player).updateHealth(health, -10);
            ((Player) player).setHealth(health);
+           
+           if(((Player)player).getDirection() == 1){
+       			((Player) player).setX(player.getX() - 5);
+       		}
+       		else{
+       			((Player) player).setX(player.getX() + 5);
+       		}
+           
+           soundManager.play(mushroomSound);
         }
         else if (powerUp instanceof PowerUp.Gas) {
             //Do not remove from the map
         	((Player) player).setcanShoot(false); //Player can not shoot
+        	if(((Player)player).getDirection() == 1){
+        		((Player) player).setX(player.getX() - 5);
+        	}
+        	else{
+        		((Player) player).setX(player.getX() + 5);
+        	}
+        	
          }
         else if (powerUp instanceof PowerUp.Music) {
             // change the music
         	player.setHealth(player.updateHealth(player.getHealth(), 5));
         	// remove it from the map
             map.removeSprite(powerUp);
-            soundManager.play(prizeSound);
+            soundManager.play(boopSound);
         }
         else if (powerUp instanceof PowerUp.Goal) {
             // advance to next map

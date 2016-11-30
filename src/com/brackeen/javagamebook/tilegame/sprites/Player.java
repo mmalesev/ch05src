@@ -50,6 +50,8 @@ public class Player extends Creature {
     
     public void updateInvincibleTime(int update){
     	invincibleTime += update;
+    }
+    
     private long shootTime = 0;
     private boolean canShoot = true;
     private int shootCount = 0;
